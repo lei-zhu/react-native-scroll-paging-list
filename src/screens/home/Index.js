@@ -4,7 +4,8 @@ import {
   StyleSheet,
   // ScrollView,
   View,
-  Text,
+  // Text,
+  Button,
   // StatusBar,
 } from 'react-native';
 // import PropTypes from 'prop-types';
@@ -50,7 +51,16 @@ export default class Home extends PureComponent {
   render() {
     return (
       <View style={styles.homeWrap}>
-        <Text>Home Screen</Text>
+        <Button
+          title="Scroll Paging List"
+          onPress={() => {
+            Navigation.push(this.props.componentId, {
+              component: {
+                name: 'Home.ScrollPagingList',
+              },
+            });
+          }}
+        />
       </View>
     );
   }
