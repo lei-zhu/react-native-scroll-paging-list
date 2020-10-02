@@ -8,7 +8,6 @@ import {
   Image,
   FlatList,
   RefreshControl,
-  // StatusBar,
 } from 'react-native';
 // import PropTypes from 'prop-types';
 import {zoomWidth, zoomHeight} from '../../utils/getScreenSize';
@@ -20,7 +19,7 @@ const ITEM_HEIGHT = 240 / zoomHeight;
 const ITEM_SPEARATOR_HEIGHT = 12 / zoomHeight;
 const API_ADDRESS = 'http://apis.juhe.cn/goodbook/query';
 
-export default class ScrollPagingList extends PureComponent {
+export default class FlatListDemo extends PureComponent {
   // static propTypes = {
   //   prop: PropTypes
   // }
@@ -29,9 +28,10 @@ export default class ScrollPagingList extends PureComponent {
     return {
       topBar: {
         title: {
-          text: 'Scroll Paging List',
+          text: 'FlatList Demo',
         },
       },
+      bottomTabs: {visible: false},
     };
   }
 
@@ -42,8 +42,8 @@ export default class ScrollPagingList extends PureComponent {
       pageNumber: 1,
       pageSize: 10,
       dataList: [],
-      totalCount: null,
-      totalPages: null,
+      totalCount: 0,
+      totalPages: 0,
       loading: false,
       refreshing: false,
       refreshFlag: false,
@@ -84,18 +84,21 @@ export default class ScrollPagingList extends PureComponent {
     const url = `${API_ADDRESS}?key=${queryParams.key}&catalog_id=${queryParams.catalog_id}&pn=${queryParams.pn}&rn=${queryParams.rn}`;
     const request = {method: 'GET'};
 
+    const that = this;
     await this.fetchRequest(url, request).then((res) => {
       const {result, error_code, reason} = res;
       if (result === null && error_code && reason) {
-        this.setState({
-          pageNumber: pageNumber,
-          dataList: [],
-          totalCount: 0,
-          totalPages: 0,
-          loading: false,
-          refreshing: false,
-          finished: true,
-        });
+        setTimeout(() => {
+          that.setState({
+            pageNumber: pageNumber,
+            dataList: [],
+            totalCount: 0,
+            totalPages: 0,
+            loading: false,
+            refreshing: false,
+            finished: true,
+          });
+        }, 500);
 
         console.log(reason);
         return;
@@ -122,7 +125,35 @@ export default class ScrollPagingList extends PureComponent {
     });
   };
 
-  itemRender = ({item}) => {
+  handleFlatListRefresh = async () => {
+    this.setState({refreshing: true});
+    const {pageSize} = this.state;
+    await this.getPageDataList(1, pageSize);
+  };
+
+  handleLoadNextPageDataList = () => {
+    const {pageNumber, pageSize, totalPages} = this.state;
+    const nextPage = pageNumber + 1;
+    if (nextPage <= totalPages) {
+      this.getPageDataList(nextPage, pageSize);
+    }
+  };
+
+  keyExtractor = (item, index) => {
+    const {title} = item;
+    return `${index}-${title}`;
+  };
+
+  getItemLayout = (item, index) => {
+    const offset = ITEM_HEIGHT * index + ITEM_SPEARATOR_HEIGHT * index;
+    return {
+      length: ITEM_HEIGHT,
+      offset,
+      index,
+    };
+  };
+
+  renderItem = ({item}) => {
     const {title, catalog, sub2, reading, img, bytime} = item;
     return (
       <View style={[styles.itemWrap]}>
@@ -148,34 +179,6 @@ export default class ScrollPagingList extends PureComponent {
     );
   };
 
-  getItemLayout = (item, index) => {
-    const offset = ITEM_HEIGHT * index + ITEM_SPEARATOR_HEIGHT * index;
-    return {
-      length: ITEM_HEIGHT,
-      offset,
-      index,
-    };
-  };
-
-  keyExtractor = (item, index) => {
-    const {title} = item;
-    return `${index}-${title}`;
-  };
-
-  handleFlatListRefresh = async () => {
-    this.setState({refreshing: true});
-    const {pageSize} = this.state;
-    await this.getPageDataList(1, pageSize);
-  };
-
-  handleLoadNextPageDataList = () => {
-    const {pageNumber, pageSize, totalPages} = this.state;
-    const nextPage = pageNumber + 1;
-    if (nextPage <= totalPages) {
-      this.getPageDataList(nextPage, pageSize);
-    }
-  };
-
   renderItemSeparatorComponent = () => {
     return <View style={styles.separatorWrap} />;
   };
@@ -190,28 +193,64 @@ export default class ScrollPagingList extends PureComponent {
   };
 
   renderListFooterComponent = () => {
-    const {loading, finished} = this.state;
-    if (finished === true) {
-      return (
-        <View style={[styles.loadMoreWrap]}>
-          <Text style={[styles.loadMoreText]}>没有了</Text>
-        </View>
-      );
+    const {
+      dataList,
+      totalCount,
+      totalPages,
+      loading,
+      refreshing,
+      finished,
+    } = this.state;
+
+    if (dataList && dataList.length > 0 && totalCount > 0 && totalPages > 0) {
+      if (loading === false && finished === true) {
+        return (
+          <View style={[styles.loadMoreWrap]}>
+            <Text style={[styles.loadMoreText]}>没有了</Text>
+          </View>
+        );
+      }
+
+      if (loading === true && refreshing === false) {
+        return (
+          <View style={[styles.loadMoreWrap]}>
+            <Text style={[styles.loadMoreText]}>加载中...</Text>
+          </View>
+        );
+      }
+
+      return <View style={styles.separatorWrap} />;
     }
 
-    if (loading === true) {
-      return (
-        <View style={[styles.loadMoreWrap]}>
-          <Text style={[styles.loadMoreText]}>加载中...</Text>
-        </View>
-      );
-    }
-
-    return <View style={styles.separatorWrap} />;
+    return null;
   };
 
   renderListHeaderComponent = () => {
-    return <View style={styles.separatorWrap} />;
+    const {dataList, totalCount, totalPages, loading, finished} = this.state;
+
+    if (
+      dataList &&
+      dataList.length > 0 &&
+      totalCount > 0 &&
+      totalPages > 0 &&
+      loading === false &&
+      finished === true
+    ) {
+      return <View style={styles.separatorWrap} />;
+    }
+
+    return null;
+  };
+
+  renderListLoadingStatus = () => {
+    return (
+      <View style={styles.scrollPagingListWrap}>
+        <View style={[styles.listStatusWrap]}>
+          <Image source={IMG_PANDA} style={[styles.listStatusImage]} />
+          <Text style={[styles.listStatusText2]}>正在努力加载哟</Text>
+        </View>
+      </View>
+    );
   };
 
   render() {
@@ -222,57 +261,51 @@ export default class ScrollPagingList extends PureComponent {
       totalPages,
       loading,
       refreshing,
-      finished,
     } = this.state;
 
     if (
       pageNumber === 1 &&
       (!dataList || dataList.length === 0) &&
       totalCount === 0 &&
-      totalPages === 0 &&
-      loading === false &&
-      finished === true
+      totalPages === 0
     ) {
-      return this.renderListEmptyComponent();
-    }
+      if (loading === true || refreshing === true) {
+        return this.renderListLoadingStatus();
+      }
 
-    if (
-      pageNumber === 1 &&
-      (!dataList || dataList.length === 0) &&
-      totalCount === null &&
-      totalPages === null &&
-      loading === true &&
-      finished === false
-    ) {
-      return (
-        <View style={styles.scrollPagingListWrap}>
-          <View style={[styles.listStatusWrap]}>
-            <Image source={IMG_PANDA} style={[styles.listStatusImage]} />
-            <Text style={[styles.listStatusText, {color: '#1890ff'}]}>
-              正在努力加载哟
-            </Text>
-          </View>
-        </View>
-      );
+      // if (loading === false || finished === true) {
+      //   return this.renderListEmptyComponent();
+      // }
     }
 
     return (
       <View style={styles.scrollPagingListWrap}>
         <FlatList
+          style={[styles.flatListStyle]}
+          contentContainerStyle={[styles.flatListStyle]}
           data={dataList}
           extraData={this.state}
-          renderItem={this.itemRender}
+          renderItem={this.renderItem}
           getItemLayout={this.getItemLayout} // 用于避免动态测量内容尺寸的开销，不过前提是你可以提前知道内容的高度
           keyExtractor={this.keyExtractor} // 此函数用于为给定的 item 生成一个不重复的 key
-          refreshing={refreshing}
-          onRefresh={this.handleFlatListRefresh}
-          onEndReachedThreshold={0.1} // 决定当距离内容最底部还有多远时触发 onEndReached 回调
+          // refreshing={refreshing}
+          // onRefresh={this.handleFlatListRefresh}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={this.handleFlatListRefresh}
+              tintColor="#1890ff" // ios
+              colors={['#1890ff']} // andriod
+              progressBackgroundColor="#ffffff"
+            />
+          }
+          onEndReachedThreshold={0.2} // 决定当距离内容最底部还有多远时触发 onEndReached 回调
           onEndReached={this.handleLoadNextPageDataList} // 当列表被滚动到距离内容最底部不足 onEndReachedThreshold 的距离时调用
           ItemSeparatorComponent={this.renderItemSeparatorComponent} // 行与行之间的分隔线组件
-          // ListEmptyComponent={this.renderListEmptyComponent} // 列表为空时显示
+          ListEmptyComponent={this.renderListEmptyComponent} // 列表为空时显示
           ListFooterComponent={this.renderListFooterComponent} // 尾部组件
           ListHeaderComponent={this.renderListHeaderComponent} // 头部组件
-          // progressViewOffset={0} // 当需要在指定的偏移处显示加载指示器的时候，就可以设置这个值
+          progressViewOffset={30} // 当需要在指定的偏移处显示加载指示器的时候，就可以设置这个值（距离顶部的距离）
         />
       </View>
     );
@@ -286,6 +319,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffffff',
+  },
+  flatListStyle: {
+    flex: 1,
+  },
+  flatListContainerStyle: {
+    flex: 1,
   },
   loadingWrap: {
     flex: 1,
@@ -306,6 +345,12 @@ const styles = StyleSheet.create({
   listStatusText: {
     marginTop: 10 / zoomHeight,
     color: '#999999',
+    fontSize: 14,
+    letterSpacing: 1 / zoomWidth,
+  },
+  listStatusText2: {
+    marginTop: 10 / zoomHeight,
+    color: '#1890ff',
     fontSize: 14,
     letterSpacing: 1 / zoomWidth,
   },
