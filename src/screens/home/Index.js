@@ -12,7 +12,7 @@ import {
 
 import {Navigation} from 'react-native-navigation';
 import AntDesignIcons from 'react-native-vector-icons/AntDesign';
-import { zoomHeight } from '../../utils/getScreenSize';
+import {zoomHeight} from '../../utils/getScreenSize';
 
 export default class Home extends PureComponent {
   // static propTypes = {
@@ -53,22 +53,11 @@ export default class Home extends PureComponent {
     return (
       <View style={styles.homeWrap}>
         <Button
-          title="FlatList"
+          title="FlatList Demo"
           onPress={() => {
             Navigation.push(this.props.componentId, {
               component: {
                 name: 'Home.FlatListDemo',
-              },
-            });
-          }}
-        />
-        <View style={[styles.separatorWrap]} />
-        <Button
-          title="Recycler ListView"
-          onPress={() => {
-            Navigation.push(this.props.componentId, {
-              component: {
-                name: 'Home.RecyclerListViewDemo',
               },
             });
           }}
