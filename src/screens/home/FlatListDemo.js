@@ -46,7 +46,6 @@ export default class FlatListDemo extends PureComponent {
       totalPages: 0,
       loading: false,
       refreshing: false,
-      refreshFlag: false,
       finished: false,
     };
   }
