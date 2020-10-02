@@ -299,7 +299,7 @@ export default class ScrollPagingList extends PureComponent {
               progressBackgroundColor="#ffffff"
             />
           }
-          onEndReachedThreshold={0.1} // 决定当距离内容最底部还有多远时触发 onEndReached 回调
+          onEndReachedThreshold={0.2} // 决定当距离内容最底部还有多远时触发 onEndReached 回调
           onEndReached={this.handleLoadNextPageDataList} // 当列表被滚动到距离内容最底部不足 onEndReachedThreshold 的距离时调用
           ItemSeparatorComponent={this.renderItemSeparatorComponent} // 行与行之间的分隔线组件
           ListEmptyComponent={this.renderListEmptyComponent} // 列表为空时显示
