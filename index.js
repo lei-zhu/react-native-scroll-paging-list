@@ -11,7 +11,8 @@
 import {Navigation} from 'react-native-navigation';
 import AntDesignIcons from 'react-native-vector-icons/AntDesign';
 import Home from './src/screens/home/Index';
-import ScrollPagingList from './src/screens/home/ScrollPagingList';
+import FlatListDemo from './src/screens/home/FlatListDemo';
+import RecyclerListViewDemo from './src/screens/home/RecyclerListViewDemo';
 import Setting from './src/screens/setting/Index';
 
 const themeColor = '#1890ff';
@@ -20,7 +21,11 @@ const fontSize = 14;
 const selectedFontSize = 14;
 
 Navigation.registerComponent('Home', () => Home);
-Navigation.registerComponent('Home.ScrollPagingList', () => ScrollPagingList);
+Navigation.registerComponent('Home.FlatListDemo', () => FlatListDemo);
+Navigation.registerComponent(
+  'Home.RecyclerListViewDemo',
+  () => RecyclerListViewDemo,
+);
 Navigation.registerComponent('Setting', () => Setting);
 
 Navigation.setDefaultOptions({

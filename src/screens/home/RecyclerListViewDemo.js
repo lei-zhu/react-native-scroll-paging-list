@@ -12,6 +12,17 @@ import {
 import {zoomWidth, zoomHeight} from '../../utils/getScreenSize';
 
 export default class RecyclerListViewDemo extends PureComponent {
+  static options() {
+    return {
+      topBar: {
+        title: {
+          text: 'Recycler ListView Demo',
+        },
+      },
+      bottomTabs: {visible: false},
+    };
+  }
+
   render() {
     return (
       <View>

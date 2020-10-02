@@ -12,6 +12,7 @@ import {
 
 import {Navigation} from 'react-native-navigation';
 import AntDesignIcons from 'react-native-vector-icons/AntDesign';
+import { zoomHeight } from '../../utils/getScreenSize';
 
 export default class Home extends PureComponent {
   // static propTypes = {
@@ -52,13 +53,35 @@ export default class Home extends PureComponent {
     return (
       <View style={styles.homeWrap}>
         <Button
-          title="Scroll Paging List"
+          title="FlatList"
           onPress={() => {
             Navigation.push(this.props.componentId, {
               component: {
-                name: 'Home.ScrollPagingList',
+                name: 'Home.FlatListDemo',
               },
             });
+          }}
+        />
+        <View style={[styles.separatorWrap]} />
+        <Button
+          title="Recycler ListView"
+          onPress={() => {
+            Navigation.push(this.props.componentId, {
+              component: {
+                name: 'Home.RecyclerListViewDemo',
+              },
+            });
+          }}
+        />
+        <View style={[styles.separatorWrap]} />
+        <Button
+          title="React Native Scroll Paging List"
+          onPress={() => {
+            // Navigation.push(this.props.componentId, {
+            //   component: {
+            //     name: 'Home.RecyclerListViewDemo',
+            //   },
+            // });
           }}
         />
       </View>
@@ -69,10 +92,13 @@ export default class Home extends PureComponent {
 const styles = StyleSheet.create({
   homeWrap: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ffffff',
+  },
+  separatorWrap: {
+    height: 30 / zoomHeight,
   },
 });

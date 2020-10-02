@@ -19,7 +19,7 @@ const ITEM_HEIGHT = 240 / zoomHeight;
 const ITEM_SPEARATOR_HEIGHT = 12 / zoomHeight;
 const API_ADDRESS = 'http://apis.juhe.cn/goodbook/query';
 
-export default class ScrollPagingList extends PureComponent {
+export default class FlatListDemo extends PureComponent {
   // static propTypes = {
   //   prop: PropTypes
   // }
@@ -28,7 +28,7 @@ export default class ScrollPagingList extends PureComponent {
     return {
       topBar: {
         title: {
-          text: 'Scroll Paging List',
+          text: 'FlatList Demo',
         },
       },
       bottomTabs: {visible: false},
