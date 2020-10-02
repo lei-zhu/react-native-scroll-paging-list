@@ -12,6 +12,9 @@ target 'ReactNativeScrollPagingList' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+
+
+
   target 'ReactNativeScrollPagingListTests' do
     inherit! :complete
     # Pods for testing

@@ -14,7 +14,7 @@ import Home from './src/screens/home/Index';
 import ScrollPagingList from './src/screens/home/ScrollPagingList';
 import Setting from './src/screens/setting/Index';
 
-const themeColor = '#4d089a';
+const themeColor = '#1890ff';
 const whiteColor = '#ffffff';
 const fontSize = 14;
 const selectedFontSize = 14;
