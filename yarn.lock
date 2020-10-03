@@ -5632,7 +5632,7 @@ react-lifecycles-compat@2.0.0:
   resolved "https://registry.npm.taobao.org/react-lifecycles-compat/download/react-lifecycles-compat-2.0.0.tgz#71d9c4cde47114c4102454f76da055c2bc48c948"
   integrity sha1-cdnEzeRxFMQQJFT3baBVwrxIyUg=
 
-react-native-navigation@^7.0.0:
+react-native-navigation@7.0.0:
   version "7.0.0"
   resolved "https://registry.npm.taobao.org/react-native-navigation/download/react-native-navigation-7.0.0.tgz#5decd9f9dacc15d21f73f8b157b112513b47e381"
   integrity sha1-XezZ+drMFdIfc/ixV7ESUTtH44E=
@@ -5643,7 +5643,7 @@ react-native-navigation@^7.0.0:
     react-lifecycles-compat "2.0.0"
     tslib "1.9.3"
 
-react-native-vector-icons@^7.1.0:
+react-native-vector-icons@7.1.0:
   version "7.1.0"
   resolved "https://registry.npm.taobao.org/react-native-vector-icons/download/react-native-vector-icons-7.1.0.tgz#145487d617b2a81d395d2cf64e6e065fcab3a454"
   integrity sha1-FFSH1heyqB05XSz2Tm4GX8qzpFQ=
