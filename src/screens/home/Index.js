@@ -64,13 +64,13 @@ export default class Home extends PureComponent {
         />
         <View style={[styles.separatorWrap]} />
         <Button
-          title="React Native Scroll Paging List"
+          title="Video Player Demo"
           onPress={() => {
-            // Navigation.push(this.props.componentId, {
-            //   component: {
-            //     name: 'Home.RecyclerListViewDemo',
-            //   },
-            // });
+            Navigation.push(this.props.componentId, {
+              component: {
+                name: 'Home.VideoPlayerDemo',
+              },
+            });
           }}
         />
       </View>

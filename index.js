@@ -12,6 +12,7 @@ import {Navigation} from 'react-native-navigation';
 import AntDesignIcons from 'react-native-vector-icons/AntDesign';
 import Home from './src/screens/home/Index';
 import FlatListDemo from './src/screens/home/FlatListDemo';
+import VideoPlayerDemo from './src/screens/home/VideoPlayerDemo';
 import Setting from './src/screens/setting/Index';
 
 const themeColor = '#1890ff';
@@ -21,6 +22,7 @@ const selectedFontSize = 14;
 
 Navigation.registerComponent('Home', () => Home);
 Navigation.registerComponent('Home.FlatListDemo', () => FlatListDemo);
+Navigation.registerComponent('Home.VideoPlayerDemo', () => VideoPlayerDemo);
 Navigation.registerComponent('Setting', () => Setting);
 
 Navigation.setDefaultOptions({
